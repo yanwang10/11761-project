@@ -1,6 +1,6 @@
-import arff
 import sys
 from avg_sen_len import avg_sen_len
+from random_feature import random_feature
 
 def load_text(filename):
 	text = list()
@@ -15,12 +15,35 @@ def load_text(filename):
 			article.append(line.strip().split(' '))
 	return text
 
-def merge(data, names, feature_dict):
-	for feature_name, feature_list in feature_dict.items():
-		assert len(data) == len(feature_list)
-		for row, value in zip(data, feature_list):
-			row.append(value)
-		names.append(feature_name)
+'''
+	Parameter data should be a list:
+	[ feature_tuple_1, feature_tuple_2, ...]
+	Each tuple should be : ( attrs, values )
+	attrs must contain these two fields: name and type
+'''
+def arff_dump(filename, data):
+	f = open(filename, 'w')
+
+	f.write('@RELATION whatever\n')
+	for (attrs, values) in data:
+		f.write('@ATTRIBUTE %s %s\n' % (attrs['name'], attrs['type']))
+	f.write('@DATA\n')
+	# check if all value lists have the same length
+	l = None
+	for (attrs, values) in data:
+		if not l:
+			l = len(values)
+		else:
+			assert l == len(values)
+
+	for i in xrange(l):
+		v = []
+		for (attrs, values) in data:
+			v.append(str(values[i]))
+		f.write(','.join(v) + '\n')
+
+	f.close()
+
 
 if __name__ == '__main__':
 	if len(sys.argv) <= 3:
@@ -31,18 +54,17 @@ if __name__ == '__main__':
 	output_file = sys.argv[3]
 
 	text = load_text(text_file)
-	names = ['Label']
-	data = [[line.strip()] for line in open(label_file, 'r')]
-	assert len(data) == len(text)
+	labels = [int(line.strip()) for line in open(label_file, 'r')]
+	data = [ ( {'name':'label', 'type':'{0, 1}'}, labels ) ]
+	assert len(labels) == len(text)
 
 
 	'''
 		Call functions to extract features and add to data.
 	'''
-	merge(data, names, avg_sen_len(text))
-
+	data += avg_sen_len(text)
 
 	'''
 		Output the arff file.
 	'''
-	arff.dump(output_file, data, relation = 'whatever', names = names)
+	arff_dump('feature.arff', data)
