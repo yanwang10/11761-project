@@ -1,6 +1,7 @@
 import sys
 from avg_sen_len import avg_sen_len
 from random_feature import random_feature
+from w2v_sim import w2v_sim
 
 def load_text(filename):
 	text = list()
@@ -63,8 +64,9 @@ if __name__ == '__main__':
 		Call functions to extract features and add to data.
 	'''
 	data += avg_sen_len(text)
+	data += w2v_sim(text)
 
 	'''
 		Output the arff file.
 	'''
-	arff_dump('feature.arff', data)
+	arff_dump(output_file, data)
