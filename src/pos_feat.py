@@ -8,6 +8,7 @@ def extract_pos_feat(text):
     pos_feat = []
     
     for article in text:
+        pos_feat.append('~~~\n')
         for sent in article:
             token_tags = tag(sent)
             tags = map(lambda x: x[1], token_tags)
