@@ -74,6 +74,8 @@ if __name__ == '__main__':
 	text_file = sys.argv[1]
 	label_file = sys.argv[2]
 	output_file = sys.argv[3]
+	pos_file = text_file.split(r'/')[-1].replace('dat', 'pos')
+	pos_file = '../data/' + pos_file
 	param = None
 	if len(sys.argv) > 4:
 		standardize_file = sys.argv[4]
@@ -88,10 +90,17 @@ if __name__ == '__main__':
 	'''
 		Call functions to extract features and add to data.
 	'''
-	data += avg_sen_len(text)
-	data += w2v_sim(text)
-	data += ngram(text, '../data/3.binlm', 'tri')
-	data += ngram(text, '../data/4.binlm', 'quad')
+	#data += avg_sen_len(text)
+	#data += w2v_sim(text)
+	#data += ngram(text, '../data/3.binlm', 'tri')
+	#data += ngram(text, '../data/4.binlm', 'quad')
+
+	print pos_file
+	pos_labels = load_text(pos_file)
+	print pos_labels
+	assert len(pos_labels) == len(text)
+	data += ngram(pos_labels, '../data/pos3.binlm', 'pos-tri')
+	data += ngram(pos_labels, '../data/pos4.binlm', 'pos-quad')
 
 	'''
 		Output the arff file.
