@@ -7,7 +7,7 @@ TEMP_TEST_FILE = 'temp_test.dat'
 PARAM_FILE = 'param.json'
 TEMP_FEAT_FILE = 'temp_feat'
 CLASSIFIER_PATH = './liblinear/predict'
-CLASSIFIER_MODEL = 'predict_model.11761'
+CLASSIFIER_MODEL = 'model.11761'
 TEMP_OUTPUT_FILE = 'temp_predict'
 
 '''
