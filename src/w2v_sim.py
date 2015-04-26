@@ -1,14 +1,10 @@
+import numpy as np
 from pattern.en import tag
 w2vfile = '../data/LM-train-50.txt'
 
 #@profile
 def inner_product(a, b):
-	if len(a) != len(b):
-		return 0.0
-	s = 0.0
-	for ia, ib in zip(a, b):
-		s += ia * ib
-	return s
+	return a * b
 
 def average(l):
 	return sum(l) / len(l)
@@ -37,7 +33,7 @@ def w2v_sim(text, pos = None):
 		seg = line.strip().split(' ')
 		if seg[0] in vocab:
 			count += 1
-			vocab[seg[0]] = [float(seg[j]) for j in xrange(1, dim + 1)]
+			vocab[seg[0]] = np.array([float(seg[j]) for j in xrange(1, dim + 1)])
 	print count, '/', len(vocab)
 	avg_sim = list()
 	max_sim = list()
