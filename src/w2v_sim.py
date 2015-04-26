@@ -4,7 +4,8 @@ w2vfile = '../data/LM-train-50.txt'
 
 #@profile
 def inner_product(a, b):
-	return a * b
+	#return np.sum(a * b)
+	return a.dot(b)
 
 def average(l):
 	return sum(l) / len(l)
@@ -34,7 +35,7 @@ def w2v_sim(text, pos = None):
 		if seg[0] in vocab:
 			count += 1
 			vocab[seg[0]] = np.array([float(seg[j]) for j in xrange(1, dim + 1)])
-	print count, '/', len(vocab)
+	del vocab['<UNK>']
 	avg_sim = list()
 	max_sim = list()
 	cont_sim_avg = list()
@@ -54,7 +55,8 @@ def w2v_sim(text, pos = None):
 					cont_tokens.append(w)
 			for i in xrange(len(cont_tokens)):
 				for j in xrange(i + 1, len(cont_tokens)):
-					p = inner_product(vocab[cont_tokens[i]], vocab[cont_tokens[j]])
+					#p = inner_product(vocab[cont_tokens[i]], vocab[cont_tokens[j]])
+					p = vocab[cont_tokens[i]].dot(vocab[cont_tokens[j]])
 					cont_links.append(p)
 			'''
 			pair = list()
