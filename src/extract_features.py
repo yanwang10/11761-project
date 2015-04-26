@@ -86,21 +86,18 @@ if __name__ == '__main__':
 	data = [ ( {'name':'label', 'type':'{0, 1}'}, labels ) ]
 	assert len(labels) == len(text)
 
-
 	'''
 		Call functions to extract features and add to data.
 	'''
 	#data += avg_sen_len(text)
-	#data += w2v_sim(text)
+	data += w2v_sim(text)
 	#data += ngram(text, '../data/3.binlm', 'tri')
 	#data += ngram(text, '../data/4.binlm', 'quad')
 
-	print pos_file
-	pos_labels = load_text(pos_file)
-	print pos_labels
-	assert len(pos_labels) == len(text)
-	data += ngram(pos_labels, '../data/pos3.binlm', 'pos-tri')
-	data += ngram(pos_labels, '../data/pos4.binlm', 'pos-quad')
+	#print pos_file
+	#pos_labels = load_text(pos_file)
+	#data += ngram(pos_labels, '../data/pos3.binlm', 'pos-tri')
+	#data += ngram(pos_labels, '../data/pos4.binlm', 'pos-quad')
 
 	'''
 		Output the arff file.
