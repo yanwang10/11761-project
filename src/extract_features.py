@@ -101,7 +101,7 @@ def get_test_feature(text_file, standardize_file, output_file):
 	arff_dump('temp_feat.arff', feat, param=param)
 	data, label = load_arff('temp_feat.arff')
 	os.system('rm temp_feat.arff')
-    to_libsvm(data, label, output_file)
+	to_libsvm(data, label, output_file)
 
 
 
@@ -127,15 +127,15 @@ if __name__ == '__main__':
 	'''
 		Call functions to extract features and add to data.
 	'''
-	#data += avg_sen_len(text)
+	data += avg_sen_len(text)
 	data += w2v_sim(text)
-	#data += ngram(text, '../data/3.binlm', 'tri')
-	#data += ngram(text, '../data/4.binlm', 'quad')
+	data += ngram(text, '../data/3.binlm', 'tri')
+	data += ngram(text, '../data/4.binlm', 'quad')
 
 	#print pos_file
-	#pos_labels = load_text(pos_file)
-	#data += ngram(pos_labels, '../data/pos3.binlm', 'pos-tri')
-	#data += ngram(pos_labels, '../data/pos4.binlm', 'pos-quad')
+	pos_labels = load_text(pos_file)
+	data += ngram(pos_labels, '../data/pos3.binlm', 'pos-tri')
+	data += ngram(pos_labels, '../data/pos4.binlm', 'pos-quad')
 
 	'''
 		Output the arff file.
