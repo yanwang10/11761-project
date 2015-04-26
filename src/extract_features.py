@@ -2,9 +2,9 @@ import sys
 import math
 import json
 from avg_sen_len import avg_sen_len
-#from random_feature import random_feature
 from w2v_sim import w2v_sim
 from ngram import ngram
+from arff_to_libsvm import load_arff, to_libsvm
 
 def load_text(filename):
 	text = list()
@@ -66,6 +66,44 @@ def arff_dump(filename, data, param = None):
 		f.write(','.join(v) + '\n')
 	f.close()
 	return param
+
+
+'''
+    IMPORTANT: function called by RunMe
+'''
+def get_test_feature(text_file, standardize_file, output_file):
+
+	param = json.loads(open(standardize_file, 'r').read())
+	text = load_text(text_file)
+
+	labels = [0] * len(text)
+	feat = [ ( {'name':'label', 'type':'{0, 1}'}, labels ) ]
+	'''
+		Call functions to extract features and add to data.
+	'''
+	# ngram feature
+	feat += ngram(text, './models/3.binlm', 'tri')
+	feat += ngram(text, './models/4.binlm', 'quad')
+
+	# w2v similarity feature
+	feat += w2v_sim(text)
+
+	# length feature
+	feat += avg_sen_len(text)
+
+	# pos feature
+	feat += ngram(pos_labels, './models/pos3.binlm', 'pos-tri')
+	feat += ngram(pos_labels, './models/pos4.binlm', 'pos-quad')
+
+	'''
+		Output the libsvm file.
+	'''
+	arff_dump('temp_feat.arff', feat, param=param)
+	data, label = load_arff('temp_feat.arff')
+	os.system('rm temp_feat.arff')
+    to_libsvm(data, label, output_file)
+
+
 
 if __name__ == '__main__':
 	if len(sys.argv) <= 3:
