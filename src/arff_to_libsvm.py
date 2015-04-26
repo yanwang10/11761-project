@@ -12,7 +12,7 @@ def load_arff(filename):
     with open(filename) as f:
         for line in map(lambda x:x.strip(), f.readlines()):
             if not at_data:
-                if line == '@DATA':
+                if line == '@DATA' or line == '@data':
                     at_data = True
             else:
                 seg = line.split(',')
@@ -28,6 +28,7 @@ def to_libsvm(feat, label, outfile):
             for j in xrange(len(feat[idx])):
                 f.write(' ' + str(j+1) + ':' + feat[idx][j])
             f.write('\n')
+
 
 if __name__ == '__main__':
     feat, label = load_arff(sys.argv[1])
