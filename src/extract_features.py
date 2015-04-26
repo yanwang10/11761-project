@@ -2,7 +2,7 @@ import sys
 import math
 import json
 from avg_sen_len import avg_sen_len
-from random_feature import random_feature
+#from random_feature import random_feature
 from w2v_sim import w2v_sim
 from ngram import ngram
 
