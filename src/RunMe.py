@@ -34,7 +34,9 @@ os.system(cmd)
 
 # print the result
 with open(TEMP_OUTPUT_FILE) as f:
-    for seg in map(lambda x:x.strip().split(' '), f.readlines()):
+    for line in map(lambda x:x.strip(), f.readlines()):
+        print line
+        seg = line.split(' ')
         print seg[1], seg[2], seg[0]
 
 '''
@@ -57,7 +59,7 @@ if self_eval:
     F_to_T = 0
     log_posterior = 0.0
     for idx in xrange(size):
-        if real[idx] == pred[idx][0]
+        if real[idx] == pred[idx][0]:
             correctness += 1
         else:
             if real[idx] == 0:

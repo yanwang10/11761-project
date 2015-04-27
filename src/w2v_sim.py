@@ -62,7 +62,7 @@ def w2v_sim(text, pos = None):
 				for j in xrange(i + 1, len(sen)):
 					if not sen[j] in vocab:
 						continue
-					p = vocab[sen[i]].dot(vocab[sen[j]])
+					p = np.dot(vocab[sen[i]], vocab[sen[j]])
 					pair.append(p)
 			art_max += max(pair)
 			art_avg += sum(pair) / len(pair)
