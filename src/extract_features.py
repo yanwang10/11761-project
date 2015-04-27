@@ -135,9 +135,9 @@ if __name__ == '__main__':
     data += ngram(text, './models/4.binlm', 'quad')
 
     #print pos_file
-    pos_labels = load_text(pos_file)
-    data += ngram(pos_labels, './models/pos3.binlm', 'pos-tri')
-    data += ngram(pos_labels, './models/pos4.binlm', 'pos-quad')
+    #pos_labels = load_text(pos_file)
+    #data += ngram(pos_labels, './models/pos3.binlm', 'pos-tri')
+    #data += ngram(pos_labels, './models/pos4.binlm', 'pos-quad')
 
     '''
         Output the arff file.
