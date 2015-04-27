@@ -1,6 +1,6 @@
 import numpy as np
 from pattern.en import tag
-w2vfile = '../data/LM-train-50.txt'
+w2vfile = './models/LM-train-50.txt'
 
 #@profile
 def inner_product(a, b):
