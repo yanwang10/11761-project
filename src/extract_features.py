@@ -102,7 +102,6 @@ def get_test_feature(text_file, standardize_file, output_file):
     '''
     arff_dump('temp_feat.arff', feat, param=param)
     data, label = load_arff('temp_feat.arff')
-    os.system('rm temp_feat.arff')
     to_libsvm(data, label, output_file)
 
 

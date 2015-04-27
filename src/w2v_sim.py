@@ -46,6 +46,8 @@ def w2v_sim(text):
 
 		max_sim.append(art_max / len(article))
 		avg_sim.append(art_avg / len(article))
+		if r % 10 == 0:
+			print r
 			
 	return [({'name':'w2v_avg_sim', 'type':'numeric'}, avg_sim), \
 			({'name':'w2v_max_sim', 'type':'numeric'}, max_sim)]

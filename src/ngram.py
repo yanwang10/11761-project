@@ -7,7 +7,7 @@ def ngram(text, binlm, prefix):
 		f = open('temp', 'w')
 		f.write('\n'.join([' '.join(sen) for sen in article]))
 		f.close()
-		r = os.popen('echo "perplexity -text temp" | ./evallm -binary %s 2> nonsense' % binlm)
+		r = os.popen('echo "perplexity -text temp" | ./evallm -binary %s 2> temp_log' % binlm)
 		s = r.read()
 		seg = s.split('\n')
 		for line in seg:
