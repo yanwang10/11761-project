@@ -25,7 +25,8 @@ ef.get_test_feature(TEMP_TEST_FILE, PARAM_FILE, TEMP_FEAT_FILE)
 
 # run the classifier
 # predict [options] test_file model_file output_file
-cmd = '{0} -b 1 {1} {2} {3}'.format(CLASSIFIER_PATH, CLASSIFIER_MODEL, TEMP_OUTPUT_FILE) 
+cmd = '{0} -b 1 {1} {2} {3}'.format(CLASSIFIER_PATH, TEMP_TEST_FILE, \
+    CLASSIFIER_MODEL, TEMP_OUTPUT_FILE) 
 os.system(cmd)
 
 # print the result
