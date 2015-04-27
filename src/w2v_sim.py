@@ -35,14 +35,10 @@ def w2v_sim(text, pos = None):
 		if seg[0] in vocab:
 			count += 1
 			vocab[seg[0]] = np.array([float(seg[j]) for j in xrange(1, dim + 1)])
-	del vocab['<UNK>']
+	if '<UNK>' in vocab:
+		del vocab['<UNK>']
 	avg_sim = list()
-	max_sim = list()
 	cont_sim_avg = list()
-	cont_sim_var = list()
-	top_sim_avg = list()
-	bot_sim_avg = list()
-	dif_sim = list()
 	for r, article in enumerate(text):
 		art_max = 0.0
 		art_avg = 0.0
@@ -58,35 +54,23 @@ def w2v_sim(text, pos = None):
 					#p = inner_product(vocab[cont_tokens[i]], vocab[cont_tokens[j]])
 					p = np.dot(vocab[cont_tokens[i]], vocab[cont_tokens[j]])
 					cont_links.append(p)
-			'''
+			
 			pair = list()
 			for i in xrange(len(sen)):
+				if not sen[i] in vocab:
+					continue
 				for j in xrange(i + 1, len(sen)):
-					p = inner_product(vocab[sen[i]], vocab[sen[j]])
+					if not sen[j] in vocab:
+						continue
+					p = vocab[sen[i]].dot(vocab[sen[j]])
 					pair.append(p)
 			art_max += max(pair)
 			art_avg += sum(pair) / len(pair)
-			'''
-		#max_sim.append(art_max / len(article))
-		#avg_sim.append(art_avg / len(article))
-		if r % 10 == 0:
-			print r
+			
+		avg_sim.append(art_avg / len(article))
 		
 		s = average(cont_links)
 		cont_sim_avg.append(s)
-		top = 5
-		if len(cont_links) < top:
-			top = len(cont_links)
-		cont_links = map(lambda a: (a - s) ** 2, cont_links)
-		dif_sim.append(average(cont_links[:top]) - average(cont_links[-top:]))
 
-	'''
-	return [({'name':'w2v_avg_sim', 'type':'numeric'}, avg_sim), \
-			({'name':'w2v_max_sim', 'type':'numeric'}, max_sim)]
-	
-	'''
 	return [({'name':'w2v_cont_avg', 'type':'numeric'}, cont_sim_avg), \
-			#({'name':'w2v_cont_var', 'type':'numeric'}, cont_sim_var), \
-			#({'name':'w2v_top_avg', 'type':'numeric'}, top_sim_avg), \
-			#({'name':'w2v_bot_avg', 'type':'numeric'}, bot_sim_avg)]
-			({'name':'w2v_cont_dif', 'type':'numeric'}, dif_sim)]
+			({'name':'w2v_avg_sim', 'type':'numeric'}, avg_sim)]
