@@ -88,14 +88,14 @@ def get_test_feature(text_file, standardize_file, output_file):
     feat += ngram(text, './models/3.binlm', 'tri')
     feat += ngram(text, './models/4.binlm', 'quad')
 
-    text = load_raw_text(text_file)
-    pos_feat = extract_pos_feat(text)
-    with open('temp_pos', 'w') as f:
-        for line in pos_feat:
-            f.write(line)
-    pos_labels = load_text('temp_pos')
-    feat += ngram(pos_labels, './models/pos3.binlm', 'pos-tri')
-    feat += ngram(pos_labels, './models/pos4.binlm', 'pos-quad')
+    # text = load_raw_text(text_file)
+    # pos_feat = extract_pos_feat(text)
+    # with open('temp_pos', 'w') as f:
+    #     for line in pos_feat:
+    #         f.write(line)
+    # pos_labels = load_text('temp_pos')
+    # feat += ngram(pos_labels, './models/pos3.binlm', 'pos-tri')
+    # feat += ngram(pos_labels, './models/pos4.binlm', 'pos-quad')
 
     '''
         Output the libsvm file.

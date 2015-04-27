@@ -28,14 +28,15 @@ ef.get_test_feature(TEMP_TEST_FILE, PARAM_FILE, TEMP_FEAT_FILE)
 
 # run the classifier
 # predict [options] test_file model_file output_file
-cmd = '{0} -b 1 {1} {2} {3}'.format(CLASSIFIER_PATH, TEMP_FEAT_FILE, \
+cmd = '{0} -b 1 -q {1} {2} {3}'.format(CLASSIFIER_PATH, TEMP_FEAT_FILE, \
     CLASSIFIER_MODEL, TEMP_OUTPUT_FILE) 
 os.system(cmd)
 
 # print the result
 with open(TEMP_OUTPUT_FILE) as f:
     for line in map(lambda x:x.strip(), f.readlines()):
-        print line
+        if line.startswith('label'):
+            continue
         seg = line.split(' ')
         print seg[1], seg[2], seg[0]
 
@@ -46,9 +47,11 @@ if self_eval:
     pred = []
     with open(TEMP_OUTPUT_FILE) as f:
         for seg in map(lambda x:x.strip().split(' '), f.readlines()):
-            pred.append((int(seg[0]), float(seg[1], float(seg[2]))))
+            if seg[0].startswith('label'):
+                continue
+            pred.append((int(seg[0]), float(seg[1]), float(seg[2])))
     real = []
-    with open('developmentSetLabels.dat') as f:
+    with open('./data/developmentSetLabels.dat') as f:
         for line in map(lambda x: x.strip(), f.readlines()):
             real.append(int(line))
     assert len(pred) == len(real)
@@ -66,7 +69,10 @@ if self_eval:
                 F_to_T += 1
             else:
                 T_to_F += 1
-        log_posterior += log(pred[idx][read[idx]+1])
+        if pred[idx][real[idx]+1] < 0.001:
+            log_posterior += log(0.001)
+        else:
+            log_posterior += log(pred[idx][real[idx]+1])
     print 'Hard correctness:', float(correctness) / size
     print 'Ture to False:', float(T_to_F) / size
     print 'False to Ture:', float(F_to_T) / size
